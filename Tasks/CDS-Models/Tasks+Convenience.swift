@@ -9,10 +9,24 @@
 import Foundation
 import CoreData
 
+enum TaskPriority: String, CaseIterable {
+    case low
+    case normal
+    case high
+    case critical
+}
+
 extension Task {
-    convenience init(name: String, notes: String? = nil, context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
+    @discardableResult convenience init(name: String,
+                     notes: String? = nil,
+                     priority: TaskPriority = .normal,
+                     completed: Bool = false,
+                     context: NSManagedObjectContext = CoreDataStack.shared.mainContext) {
         self.init(context: context)
         self.name = name
         self.notes = notes
+        self.priority = priority.rawValue //cause were saving it as a string
+        self.completed = completed
+        
     }
 }

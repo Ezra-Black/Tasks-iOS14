@@ -21,6 +21,8 @@ class TaskDetailViewController: UIViewController {
     
     @IBOutlet var nameTextField: UITextField!
     @IBOutlet var notesTextView: UITextView!
+    @IBOutlet var priorityControl: UISegmentedControl!
+    @IBOutlet var completedButton: UIButton!
     
     //MARK: - View Lifescycle
 
@@ -49,8 +51,11 @@ class TaskDetailViewController: UIViewController {
             guard let name = nameTextField.text,
                       !name.isEmpty else {return}
             let notes = notesTextView.text
+            let priorityIndex = priorityControl.selectedSegmentIndex
+            let priority = TaskPriority.allCases[priorityIndex]
             task.name = name
             task.notes = notes
+            task.priority = priority.rawValue
             do {
                try CoreDataStack.shared.mainContext.save()
             } catch {
@@ -65,8 +70,9 @@ class TaskDetailViewController: UIViewController {
         guard let name = nameTextField.text,
             !name.isEmpty else {return}
             let notes = notesTextView.text
-        
-        let _ = Task(name: name, notes: notes)
+        let priorityIndex = priorityControl.selectedSegmentIndex
+        let priority = TaskPriority.allCases[priorityIndex]
+        Task(name: name, notes: notes, priority: priority) //we made the init discardable so we can take out the let _ = Task part! :)
         saveTask()
         navigationController?.dismiss(animated: true, completion: nil)
     }
