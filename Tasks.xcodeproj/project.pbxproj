@@ -64,19 +64,43 @@
 		835219A024043811007E9B08 /* Tasks */ = {
 			isa = PBXGroup;
 			children = (
-				835219A124043811007E9B08 /* AppDelegate.swift */,
-				835219A324043811007E9B08 /* SceneDelegate.swift */,
-				835219A524043811007E9B08 /* TaskDetailViewController.swift */,
+				835219C024059111007E9B08 /* Application */,
+				835219BE240590B5007E9B08 /* View Controllers */,
+				835219BF240590E6007E9B08 /* CDS-Models */,
 				835219A724043811007E9B08 /* Main.storyboard */,
 				835219AA24043814007E9B08 /* Assets.xcassets */,
 				835219AC24043814007E9B08 /* LaunchScreen.storyboard */,
 				835219AF24043814007E9B08 /* Info.plist */,
+			);
+			path = Tasks;
+			sourceTree = "<group>";
+		};
+		835219BE240590B5007E9B08 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				835219A524043811007E9B08 /* TaskDetailViewController.swift */,
 				835219B524044412007E9B08 /* TasksTableViewController.swift */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		835219BF240590E6007E9B08 /* CDS-Models */ = {
+			isa = PBXGroup;
+			children = (
 				835219B724044671007E9B08 /* Tasks.xcdatamodeld */,
 				835219BA240449B2007E9B08 /* CoreDataStack.swift */,
 				835219BC240451CA007E9B08 /* Tasks+Convenience.swift */,
 			);
-			path = Tasks;
+			path = "CDS-Models";
+			sourceTree = "<group>";
+		};
+		835219C024059111007E9B08 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				835219A124043811007E9B08 /* AppDelegate.swift */,
+				835219A324043811007E9B08 /* SceneDelegate.swift */,
+			);
+			path = Application;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

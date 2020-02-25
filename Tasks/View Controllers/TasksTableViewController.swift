@@ -52,18 +52,29 @@ class TasksTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+            let task = tasks[indexPath.row]
+            CoreDataStack.shared.mainContext.delete(task)
+            do {
+               try CoreDataStack.shared.mainContext.save()
+               tableView.deleteRows(at: [indexPath], with: .fade)
+            } catch {
+                CoreDataStack.shared.mainContext.reset()
+                NSLog("error saving managed object context [MOC]: \(error)")
+            }
+        }
     }
 
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "ShowTaskDetailSegue" {
+            if let detailVC = segue.destination as? TaskDetailViewController {
+                if let indexPath = tableView.indexPathForSelectedRow {
+                    detailVC.task = tasks[indexPath.row]
+                }
+            }
+        }
     }
     
 
