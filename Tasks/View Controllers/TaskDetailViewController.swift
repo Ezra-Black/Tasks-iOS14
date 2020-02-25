@@ -21,6 +21,8 @@ class TaskDetailViewController: UIViewController {
     
     @IBOutlet var nameTextField: UITextField!
     @IBOutlet var notesTextView: UITextView!
+    @IBOutlet var priorityControl: UISegmentedControl!
+    @IBOutlet var completedButton: UIButton!
     
     //MARK: - View Lifescycle
 
@@ -33,11 +35,33 @@ class TaskDetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         //checks to see if task has a value when view is about to appear. lets us know if a task was passed into this controller.
-        if task == nil {
+        if let task = task {
+            title = task.name
+            nameTextField.text = task.name
+            notesTextView.text = task.notes
+        } else {
             //if no task was passed in assume the user wants to create one. so add a button to the nav bar to save the users task.
             navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(save))
         }
-        
+    }
+    //checks to see if we already had a task, if so, update and save it.
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if let task = task {
+            guard let name = nameTextField.text,
+                      !name.isEmpty else {return}
+            let notes = notesTextView.text
+            let priorityIndex = priorityControl.selectedSegmentIndex
+            let priority = TaskPriority.allCases[priorityIndex]
+            task.name = name
+            task.notes = notes
+            task.priority = priority.rawValue
+            do {
+               try CoreDataStack.shared.mainContext.save()
+            } catch {
+                NSLog("error saving managed context: \(error)")
+            }
+        }
     }
     
     //MARK: - Actions
@@ -46,8 +70,9 @@ class TaskDetailViewController: UIViewController {
         guard let name = nameTextField.text,
             !name.isEmpty else {return}
             let notes = notesTextView.text
-        
-        let _ = Task(name: name, notes: notes)
+        let priorityIndex = priorityControl.selectedSegmentIndex
+        let priority = TaskPriority.allCases[priorityIndex]
+        Task(name: name, notes: notes, priority: priority) //we made the init discardable so we can take out the let _ = Task part! :)
         saveTask()
         navigationController?.dismiss(animated: true, completion: nil)
     }
