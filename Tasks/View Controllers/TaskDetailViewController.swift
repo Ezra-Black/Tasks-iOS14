@@ -30,6 +30,13 @@ class TaskDetailViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         notesTextView.text = ""
+        let priority: TaskPriority
+        if let taskPriority = task?.priority {
+            priority = TaskPriority(rawValue: taskPriority)!
+        } else {
+            priority = .normal
+        }
+        priorityControl.selectedSegmentIndex = TaskPriority.allCases.firstIndex(of: priority) ?? 1
     }
     
     override func viewWillAppear(_ animated: Bool) {
